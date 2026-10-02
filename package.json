@@ -1,0 +1,68 @@
+{
+  "name": "dsh-launch-buttons",
+  "version": "0.2.0",
+  "description": "Multiple named launch targets in the DSH composer: left-click starts the default target, right-click opens the list. 对话输入框的多启动项按钮：左键启动默认项，右键弹出列表，每项可绑定一个程序或目录。",
+  "type": "module",
+  "main": "./lib/index.js",
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "license": "BSD-3-Clause",
+  "author": "leexiaode4",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leexiaode4/dsh-launch-buttons.git"
+  },
+  "homepage": "https://github.com/leexiaode4/dsh-launch-buttons#readme",
+  "bugs": {
+    "url": "https://github.com/leexiaode4/dsh-launch-buttons/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis",
+    "launcher",
+    "composer"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json",
+    "./cordis.patch.yml": "./cordis.patch.yml"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots"
+      ],
+      "platform": "web"
+    },
+    "engines": {
+      "dsh": ">=0.1.5-rc.1"
+    }
+  }
+}

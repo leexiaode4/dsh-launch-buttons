@@ -1,0 +1,12 @@
+# Bundle patch for dsh-launch-buttons.
+#
+# The multi-item copy of `dsh-launch-button`. The id is deliberately different
+# from the original so the two packages can sit in the same profile without
+# fighting over one slot id; disable whichever one you do not want in the
+# profile patch (`- id: dsh-launch-button` + `disabled: true`).
+#
+# Without this file (and the `dsh.bundle.patch` field in package.json) the
+# package installs and does nothing, emitting "declares no dsh.bundle".
+- insert:
+    - id: dsh-launch-buttons
+      name: dsh-launch-buttons

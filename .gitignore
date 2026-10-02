@@ -1,0 +1,17 @@
+﻿# dependencies
+node_modules/
+
+# test scratch directory (created next to the tests when %TEMP% is not writable)
+.tmp-home*/
+.tmp-home-*/
+
+# packaged output
+*.tgz
+dist/
+
+# editor / OS noise
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
