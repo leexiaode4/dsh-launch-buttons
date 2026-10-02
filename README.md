@@ -12,16 +12,15 @@ the original plugin is left untouched ([中文说明见下方](#中文)).
 - `＋ New launch item` at the bottom: give it a label and an absolute path, scoped to
   *this conversation only* or to *the whole workspace*.
 
-State lives on the host in `$DSH_HOME/launch-buttons/store.json`
-(`C:\Users\Administrator\.dsh\launch-buttons\store.json` on Windows), so it survives page
+State lives on the host in `$DSH_HOME/launch-buttons/store.json`, so it survives page
 reloads and is shared by every client of the same profile.
 
 ### Install
 
 ```sh
-dsh plugin --profile desktop add dsh-launch-buttons                     # from npm
-dsh plugin --profile desktop add github:<owner>/dsh-launch-buttons      # from GitHub
-dsh plugin --profile desktop add "C:\path\to\dsh-launch-buttons"        # from a local checkout
+dsh plugin --profile desktop add github:leexiaode4/dsh-launch-buttons   # from GitHub
+dsh plugin --profile desktop add "<path to this checkout>"              # from a local copy
+dsh plugin --profile desktop add dsh-launch-buttons                     # from npm, once published
 ```
 
 Then restart DSH completely — the wiring is host-side, a page refresh is not enough. If
@@ -67,7 +66,7 @@ BSD-3-Clause.
 
 ## 数据放在哪
 
-`$DSH_HOME/launch-buttons/store.json`（本机 = `C:\Users\Administrator\.dsh\launch-buttons\store.json`）：
+`$DSH_HOME/launch-buttons/store.json`：
 
 ```json
 {
@@ -88,12 +87,20 @@ BSD-3-Clause.
 
 ## 安装
 
-与 `dsh-launch-button` 相同的接法：
+与 `dsh-launch-button` 相同的接法。**推荐直接用一条命令**（会自动写下面第 1、2 步）：
 
-1. 在目标 profile 的 `node_modules` 里建一个指向本目录的链接（Windows：目录 junction）：
-   `C:\Users\Administrator\.dsh\profiles\<profile>\node_modules\dsh-launch-buttons` → `C:\Users\Administrator\.dsh\work\plugins\dsh-launch-buttons`
+```sh
+dsh plugin --profile desktop add "C:\path\to\dsh-launch-buttons"
+# 或直接从 GitHub 装：
+dsh plugin --profile desktop add github:leexiaode4/dsh-launch-buttons
+```
+
+手动接线的两步：
+
+1. 在目标 profile 的 `node_modules` 里建一个指向本目录的链接（Windows：目录 junction；macOS/Linux：`ln -s`）：
+   `<profile>/node_modules/dsh-launch-buttons` → `<本目录>`
 2. profile 的 `package.json`：
-   - `dependencies` 加 `"dsh-launch-buttons": "link:C:/Users/Administrator/.dsh/work/plugins/dsh-launch-buttons"`
+   - `dependencies` 加 `"dsh-launch-buttons": "link:<本目录>"`
    - `dsh.profile.bundles` 数组里加 `"dsh-launch-buttons"`
 3. 想让新的按钮**替代**原来的按钮时，在 profile 的 `cordis.patch.yml` 里把原插件关掉：
 
@@ -105,15 +112,15 @@ BSD-3-Clause.
    不关掉的话输入框右侧会同时出现两个启动按钮（一个旧的、一个新的），两个都能用。
 4. **完全退出并重开** DSH（改的是 Host 侧接线，刷新页面不够）。
 
-也可以走插件管理器（需要一次批准）：
+也可以走桌面端的插件管理器界面（可能需要一次批准）：
 
 ```
-npx --yes @deepseek-ai/dsh@<你运行中的版本> plugin --profile desktop add "C:\Users\Administrator\.dsh\work\plugins\dsh-launch-buttons"
+npx --yes @deepseek-ai/dsh@<你运行中的版本> plugin --profile desktop add "<本目录或包名>"
 ```
 
 ## 验证
 
-- 打开 `http://127.0.0.1:19387/dsh-launch-buttons/health`：应返回
+- 打开 `http://127.0.0.1:<DSH 的端口>/dsh-launch-buttons/health`：应返回
   `{"ok":true,"plugin":"dsh-launch-buttons","strategy":"multi-item",…}`（带 `storePath`）。
 - 输入框右侧出现 ▶ 按钮：左键应能打开工作区目录；右键应弹出启动项列表。
 - 加一个启动项 → 在列表里点它应能启动；点 `★` 后左键主按钮应直接启动它。
