@@ -311,7 +311,10 @@ test("listItems orders session, workspace, then the built-in row", () => {
 
 test("listItems has no built-in row without a workspace, and always has a default", () => {
   const { items, defaultId } = listItems(storeWithSessionAndWorkspace(), "s1", null);
-  assert.deepEqual(items.map((item) => item.scope), [SCOPE.SESSION, SCOPE.WORKSPACE]);
+  // 没有工作区目录就没有工作区分桶可合并（工作区条目按目录区分，无法凭空认领），
+  // 也就没有内置的「工作区」行；剩下的会话行仍要能当默认项。
+  assert.deepEqual(items.map((item) => item.scope), [SCOPE.SESSION]);
+  assert.equal(items[0].id, "s");
   assert.equal(defaultId, "s");
   const empty = listItems(baseStore(), "s1", null);
   assert.deepEqual(empty.items, []);
